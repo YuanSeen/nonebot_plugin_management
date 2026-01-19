@@ -1,5 +1,6 @@
 from nonebot import get_plugin_config
 from nonebot.plugin import PluginMetadata
+from nonebot.log import logger
 
 from .config import Config
 from .handle_group_application import group_request  # 导入处理模块
