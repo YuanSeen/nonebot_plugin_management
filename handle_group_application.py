@@ -16,6 +16,8 @@ from nonebot.plugin.on import on_notice
 from .config import Config
 from nonebot import get_plugin_config
 
+from .data_handle.invitation_information_util import InvitationInformationUtil
+
 config = get_plugin_config(Config)
 
 # 创建请求处理器
@@ -78,7 +80,13 @@ async def handle_group_notice(bot: Bot, event: NoticeEvent):
         # 群成员增加事件
         user_id = event.user_id
         group_id = event.group_id
+
         operator_id = getattr(event, 'operator_id', 0)
+
+        # 群成员邀请信息记录器
+        util = InvitationInformationUtil(group=group_id)
+        util.create_json()
+
 
         # 检查是否在需要监听的群组列表中
         if config.monitor_groups:
@@ -108,6 +116,7 @@ async def handle_group_notice(bot: Bot, event: NoticeEvent):
             # 邀请入群
             way = "邀请入群"
             operator_text = f"\n邀请人：{operator_id}" if operator_id else ""
+            util.add_invitation(f"{user_id}",f"{operator_id}")
         else:
             way = "未知方式入群"
             operator_text = ""
