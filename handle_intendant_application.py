@@ -78,7 +78,7 @@ async def handle_list_intendant(bot: Bot, event: GroupMessageEvent):
     return
 
 
-# 可选：添加一个查询自己是否是管理员的功能
+#添加一个查询自己是否是管理员的功能
 check_self = on_command('我是管理员吗',
                         aliases={"检查管理", "check_admin", "checkadmin"},
                         block=True,
