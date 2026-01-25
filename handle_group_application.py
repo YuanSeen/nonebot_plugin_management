@@ -18,6 +18,12 @@ from nonebot import get_plugin_config
 
 from .data_handle.invitation_information_util import InvitationInformationUtil
 
+"""
+功能：
+1、监听入群请求，并群内发送相关信息
+2、监听群人员增减，通过邀请进入群里会记录邀请人信息
+"""
+
 config = get_plugin_config(Config)
 
 # 创建请求处理器
