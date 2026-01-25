@@ -2,7 +2,8 @@
 import json
 import os
 from datetime import datetime
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, Optional
+
 
 class DataUtil:
     def __init__(self, file_path: str):

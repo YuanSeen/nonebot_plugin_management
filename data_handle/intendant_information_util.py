@@ -1,11 +1,11 @@
 import os
-from typing import Dict, Any, List, Optional
-from pathlib import Path
+from typing import Dict, Any, List
 
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.internal.permission import Permission
 
 from ys_bot.plugins.nonebot_plugin_management.data_handle.data_util import DataUtil
+
 
 async def check_admin(event: GroupMessageEvent) -> bool:
     """检查用户是否是管理员"""
@@ -14,7 +14,9 @@ async def check_admin(event: GroupMessageEvent) -> bool:
     intenddant = IntendantInformation(group_id)
     return intenddant.is_intendant(user_id)
 
+
 INTENDANT = Permission(check_admin)
+
 
 class IntendantInformation(DataUtil):
     def __init__(self, group: int):

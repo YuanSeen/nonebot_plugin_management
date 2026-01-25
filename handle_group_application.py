@@ -1,21 +1,18 @@
-import json
 from datetime import datetime
-from typing import Optional
+
+from nonebot import get_plugin_config
 from nonebot import on_request, logger
 from nonebot.adapters.onebot.v11 import (
     Bot,
     GroupRequestEvent,
     RequestEvent,
     MessageSegment,
-    NoticeEvent,
     GroupIncreaseNoticeEvent,
     GroupDecreaseNoticeEvent
 )
 from nonebot.plugin.on import on_notice
 
 from .config import Config
-from nonebot import get_plugin_config
-
 from .data_handle.blacklist_information_util import BlacklistInformation
 from .data_handle.invitation_information_util import InvitationInformationUtil
 
@@ -74,6 +71,7 @@ async def handle_group_application(bot: Bot, event: RequestEvent):
 
     await bot.send_group_msg(group_id=group_id, message=message)
 
+
 @group_increase_notice.handle()
 async def increase_notice(bot: Bot, event: GroupIncreaseNoticeEvent):
     """处理群成员变动通知"""
@@ -95,7 +93,7 @@ async def increase_notice(bot: Bot, event: GroupIncreaseNoticeEvent):
         if str(group_id) not in config.monitor_groups:
             return
 
-    #确认是否是黑名单内，是->移除群聊，结束当前处理
+    # 确认是否是黑名单内，是->移除群聊，结束当前处理
     if util_black.is_in_blacklist(str(user_id)):
         await bot.set_group_kick(group_id=group_id, user_id=user_id)
         return
@@ -123,7 +121,7 @@ async def increase_notice(bot: Bot, event: GroupIncreaseNoticeEvent):
         # 邀请入群
         way = "邀请入群"
         operator_text = f"\n邀请人：{operator_id}" if operator_id else ""
-        util.add_invitation(f"{user_id}",f"{operator_id}")
+        util.add_invitation(f"{user_id}", f"{operator_id}")
     else:
         way = "未知方式入群"
         operator_text = ""
@@ -132,6 +130,7 @@ async def increase_notice(bot: Bot, event: GroupIncreaseNoticeEvent):
         f"\n时间：{current_time}") + MessageSegment.text(f"\n方式：{way}") + MessageSegment.text(operator_text)
 
     await bot.send_group_msg(group_id=group_id, message=message)
+
 
 @group_decrease_notice.handle()
 async def decrease_notice(bot: Bot, event: GroupDecreaseNoticeEvent):
@@ -174,7 +173,7 @@ async def decrease_notice(bot: Bot, event: GroupDecreaseNoticeEvent):
     elif event.sub_type == "kick":
         # 被踢出群
         if util.is_in_blacklist(str(user_id)):
-            #是否为机器人按照黑名单驱逐
+            # 是否为机器人按照黑名单驱逐
             way = "发现黑名单"
             operator_text = "驱逐"
         else:

@@ -2,9 +2,9 @@ from nonebot import get_plugin_config
 from nonebot.plugin import PluginMetadata
 
 from .config import Config
-from .handle_group_application import group_request,group_increase_notice,group_decrease_notice
-from .handle_intendant_application import add_intendant,delete_intendant,list_intendant,check_self
-from .handle_banish_application import view_blacklist,clear_blacklist,remove_blacklist,kick
+from .handle_banish_application import view_blacklist, clear_blacklist, remove_blacklist, kick
+from .handle_group_application import group_request, group_increase_notice, group_decrease_notice
+from .handle_intendant_application import add_intendant, delete_intendant, list_intendant, check_self
 
 __plugin_meta__ = PluginMetadata(
     name="入群申请管理",

@@ -1,6 +1,5 @@
 import os
-from typing import Dict, Any, List, Optional
-from pathlib import Path
+from typing import Dict, Any, List
 
 from ys_bot.plugins.nonebot_plugin_management.data_handle.data_util import DataUtil
 

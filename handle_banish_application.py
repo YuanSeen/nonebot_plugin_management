@@ -11,7 +11,7 @@ from ys_bot.plugins.nonebot_plugin_management.data_handle.intendant_information_
     IntendantInformation
 from ys_bot.plugins.nonebot_plugin_management.msg_util import get_msg_at
 
-kick = on_command('踢', aliases={"t", "踢出", "kick","飞机","飞机票"}, priority=5, block=True,
+kick = on_command('踢', aliases={"t", "踢出", "kick", "飞机", "飞机票"}, priority=5, block=True,
                   permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER | INTENDANT)
 
 # 新增命令：查看黑名单
@@ -19,12 +19,14 @@ view_blacklist = on_command('查看黑名单', aliases={"黑名单", "blacklist"
                             permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER | INTENDANT)
 
 # 新增命令：移出黑名单
-remove_blacklist = on_command('移出黑名单', aliases={"移除黑名单", "unblacklist", "移除黑名单成员"}, priority=5, block=True,
+remove_blacklist = on_command('移出黑名单', aliases={"移除黑名单", "unblacklist", "移除黑名单成员"}, priority=5,
+                              block=True,
                               permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER | INTENDANT)
 
 # 新增命令：清空黑名单
 clear_blacklist = on_command('清空黑名单', aliases={"清空黑名单列表", "clearblacklist"}, priority=5, block=True,
                              permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER)
+
 
 @kick.handle()
 async def handle_kick_application(bot: Bot, event: GroupMessageEvent,
@@ -53,7 +55,7 @@ async def handle_kick_application(bot: Bot, event: GroupMessageEvent,
                 member_info = await bot.get_group_member_info(group_id=group_id, user_id=u)
 
                 # 检查用户权限（0普通成员，1管理员，2群主）
-                if member_info.get('role') in ['admin', 'owner']|intendant_util.is_intendant(u):
+                if member_info.get('role') in ['admin', 'owner'] | intendant_util.is_intendant(u):
                     await bot.send(event, f"无法踢出群管或群主: {user_id}")
                     continue
                 # blacklist_util.add_to_blacklist(user_id=u)
@@ -73,6 +75,7 @@ async def handle_kick_application(bot: Bot, event: GroupMessageEvent,
     except Exception as e:
         await bot.send(event, f"操作失败: {str(e)}")
 
+
 @view_blacklist.handle()
 async def handle_view_blacklist(bot: Bot, event: GroupMessageEvent):
     """查看当前群组的黑名单列表"""
@@ -88,13 +91,14 @@ async def handle_view_blacklist(bot: Bot, event: GroupMessageEvent):
 
         # 格式化显示黑名单列表
         blacklist_count = len(blacklist)
-        blacklist_text = "\n".join([f"{i+1}. {user_id}" for i, user_id in enumerate(blacklist)])
+        blacklist_text = "\n".join([f"{i + 1}. {user_id}" for i, user_id in enumerate(blacklist)])
 
         message = f"当前群组黑名单列表 (共{blacklist_count}人):\n{blacklist_text}"
         await bot.send(event, message)
 
     except Exception as e:
         await bot.send(event, f"获取黑名单失败: {str(e)}")
+
 
 @remove_blacklist.handle()
 async def handle_remove_blacklist(bot: Bot, event: GroupMessageEvent,
