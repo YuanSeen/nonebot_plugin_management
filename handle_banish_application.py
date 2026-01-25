@@ -54,7 +54,9 @@ async def handle_kick_application(bot: Bot, event: GroupMessageEvent,
                 if member_info.get('role') in ['admin', 'owner']:
                     await bot.send(event, f"无法踢出群管理或群主: {user_id}")
                     continue
-                blacklist_util.add_to_blacklist(user_id=u)
+                # blacklist_util.add_to_blacklist(user_id=u)
+                # 将添加黑名单操作放如 on_notice
+                # 原因：notice方面通过黑名单判断逻辑
                 await bot.set_group_kick(group_id=group_id, user_id=u, reject_add_request=True)
                 await bot.send(event, f"已踢出用户: {user_id}，拒绝后续申请并加入黑名单")
 

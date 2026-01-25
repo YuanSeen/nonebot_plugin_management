@@ -16,6 +16,7 @@ class InvitationInformationUtil(DataUtil):
         file_path = os.path.join(data_dir, f"{group}.json")
         super().__init__(file_path)
         self.group = group
+        self.create_json()
 
     @staticmethod
     def init_invitation_data(group: int) -> Dict[str, Any]:
