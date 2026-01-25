@@ -7,7 +7,8 @@ from nonebot.permission import SUPERUSER
 from nonebot.plugin.on import on_command
 
 from ys_bot.plugins.nonebot_plugin_management.data_handle.blacklist_information_util import BlacklistInformation
-from ys_bot.plugins.nonebot_plugin_management.data_handle.intendant_information_util import INTENDANT
+from ys_bot.plugins.nonebot_plugin_management.data_handle.intendant_information_util import INTENDANT, \
+    IntendantInformation
 from ys_bot.plugins.nonebot_plugin_management.msg_util import get_msg_at
 
 kick = on_command('踢', aliases={"t", "踢出", "kick","飞机","飞机票"}, priority=5, block=True,
@@ -30,6 +31,7 @@ async def handle_kick_application(bot: Bot, event: GroupMessageEvent,
                                   user: List = Depends(get_msg_at)):
     group_id = event.group_id
     blacklist_util = BlacklistInformation(group_id)
+    intendant_util = IntendantInformation(group_id)
     if not user:
         await bot.send(event, "请@需要踢出的群员")
         return
@@ -51,8 +53,8 @@ async def handle_kick_application(bot: Bot, event: GroupMessageEvent,
                 member_info = await bot.get_group_member_info(group_id=group_id, user_id=u)
 
                 # 检查用户权限（0普通成员，1管理员，2群主）
-                if member_info.get('role') in ['admin', 'owner']:
-                    await bot.send(event, f"无法踢出群管理或群主: {user_id}")
+                if member_info.get('role') in ['admin', 'owner']|intendant_util.is_intendant(u):
+                    await bot.send(event, f"无法踢出群管或群主: {user_id}")
                     continue
                 # blacklist_util.add_to_blacklist(user_id=u)
                 # 将添加黑名单操作放如 on_notice
